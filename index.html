@@ -104,47 +104,49 @@
 
     <script>
       function updateCountdown() {
-        const now = new Date();
+  const now = new Date();
 
-        let target = new Date();
+  let target = new Date();
+  target.setHours(21);
+  target.setMinutes(0);
+  target.setSeconds(0);
+  target.setMilliseconds(0);
 
-        target.setHours(21);
-        target.setMinutes(0);
-        target.setSeconds(0);
-        target.setMilliseconds(0);
+  const distance = target - now;
 
-        // Jika sudah lewat jam 23:55 hari ini,
-        // target menjadi besok jam 23:55
-        if (now > target) {
-          target.setDate(target.getDate() + 1);
-        }
+  // Jika waktu sudah habis
+  if (distance <= 0) {
+    document.getElementById("hours").innerHTML = "00";
+    document.getElementById("minutes").innerHTML = "00";
+    document.getElementById("seconds").innerHTML = "00";
 
-        const distance = target - now;
+    clearInterval(timerInterval);
 
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    // Optional
+    document.querySelector(".subtitle").innerHTML =
+      "Pengumuman kelas telah dimulai!";
+    return;
+  }
 
-        document.getElementById("hours").innerHTML = String(hours).padStart(
-          2,
-          "0",
-        );
+  const hours = Math.floor(
+    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
 
-        document.getElementById("minutes").innerHTML = String(minutes).padStart(
-          2,
-          "0",
-        );
+  const minutes = Math.floor(
+    (distance % (1000 * 60 * 60)) / (1000 * 60)
+  );
 
-        document.getElementById("seconds").innerHTML = String(seconds).padStart(
-          2,
-          "0",
-        );
-      }
+  const seconds = Math.floor(
+    (distance % (1000 * 60)) / 1000
+  );
 
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
+  document.getElementById("hours").innerHTML = String(hours).padStart(2, "0");
+  document.getElementById("minutes").innerHTML = String(minutes).padStart(2, "0");
+  document.getElementById("seconds").innerHTML = String(seconds).padStart(2, "0");
+}
+
+updateCountdown();
+const timerInterval = setInterval(updateCountdown, 1000);
     </script>
   </body>
 </html>
